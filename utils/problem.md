@@ -46,3 +46,11 @@ echo $https_proxy
 unset http_proxy
 unset https_proxy
 ```
+
+macos文件改动
+
+```shell
+.zprofile 
+.zshrc  
+
+```
