@@ -54,3 +54,12 @@ macos文件改动
 .zshrc  
 
 ```
+
+# git push 时报错
+error: RPC failed; result=52, HTTP code = 0
+fatal: The remote end hung up unexpectedly
+
+```shell
+git config http.postBuffer 524288000
+
+
