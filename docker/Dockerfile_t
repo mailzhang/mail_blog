@@ -1,0 +1,27 @@
+# 使用CentOS 7作为基础镜像
+FROM centos:7
+
+# 维护者信息
+LABEL maintainer="yourname@example.com"
+
+# 设置环境变量，防止安装过程中出现询问
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 安装EPEL仓库，增加更多软件包
+RUN yum install -y epel-release
+
+# 安装必需的软件包
+RUN yum update -y && \
+    yum install -y \
+    ffmpeg \
+    mediainfo \
+    zbar-devel
+
+# 安装完成后清理缓存以减小镜像大小
+RUN yum clean all
+
+# 指定工作目录
+WORKDIR /data
+
+# 容器启动时执行命令
+CMD ["/bin/bash"]
