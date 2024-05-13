@@ -31,3 +31,10 @@ docker login ccr.ccs.tencentyun.com --username=xxxx
 docker tag [imageId] ccr.ccs.tencentyun.com/mail_base/ubuntu_py37_media_base:[tag]
 docker push ccr.ccs.tencentyun.com/mail_base/ubuntu_py37_media_base:v1
 ```
+
+
+mac编译linux运行
+```angular2html
+--platform linux/amd64
+docker build -f Dockerfile --platform linux/amd64  -t media_centos_base:v1 .
+```
