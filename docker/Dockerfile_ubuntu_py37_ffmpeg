@@ -1,0 +1,47 @@
+FROM ubuntu:18.04
+# centos7 python37 ffmpeg等
+# docker build -f Dockerfile_ubuntu_py37_ffmpeg -t ubuntu_py37_media_base:v1 .
+# docker run -d  --name m1 --rm ubuntu_py37_media_base:v1 tail -f /dev/null
+
+# 更新软件包列表，安装 python3.7 和其他必要的系统工具
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.7 python3.7-dev python3-pip build-essential
+
+# 更新 pip 到最新版本
+RUN python3.7 -m pip install --upgrade pip
+
+RUN apt-get install -y ffmpeg mediainfo libzbar-dev tesseract-ocr librtmp-dev
+
+# 安装cpp编译依赖
+RUN  apt-get install -y \
+    git-lfs \
+    cmake \
+    make \
+    libtool \
+    autoconf \
+    automake \
+    nasm \
+    libopus-dev \
+    g++
+    # 其他依赖项
+
+
+# 安装 Git LFS
+RUN git lfs install
+
+# 配置 Python3 和 pip 为默认命令  --已存在 python3.7 --version
+#RUN ln -s /usr/bin/python3.7 /usr/bin/python3 && \
+#    ln -s /usr/bin/pip3 /usr/bin/pip
+
+
+# 清理缓存以减少镜像大小
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 设置工作目录和默认命令
+WORKDIR /app
+#CMD ["/bin/bash"]
+CMD ["tail", "-f", "/dev/null"]

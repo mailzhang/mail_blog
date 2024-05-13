@@ -1,0 +1,66 @@
+FROM centos:7
+# centos7 python37 ffmpeg等
+# docker build -f Dockerfile_centos_py37_ffmpeg -t media_centos_base:v1 .
+RUN yum install epel-release -y && yum update -y
+
+# 安装python37
+# 安装依赖包
+RUN yum -y update && \
+    yum -y groupinstall "Development Tools" && \
+    yum -y install wget \
+                   zlib-devel \
+                   bzip2-devel \
+                   openssl-devel \
+                   ncurses-devel \
+                   sqlite-devel \
+                   readline-devel \
+                   tk-devel \
+                   gdbm-devel \
+                   db4-devel \
+                   libpcap-devel \
+                   xz-devel \
+                   libffi-devel && \
+    yum clean all
+
+# 下载并安装Python 3.7
+RUN cd /usr/src && \
+    wget https://www.python.org/ftp/python/3.7.12/Python-3.7.12.tgz && \
+    tar xzf Python-3.7.12.tgz && \
+    cd Python-3.7.12 && \
+    ./configure --enable-optimizations && \
+    make altinstall
+
+# 配置python3和pip3为默认命令
+RUN ln -s /usr/local/bin/python3.7 /usr/bin/python3 && \
+    ln -s /usr/local/bin/pip3.7 /usr/bin/pip3
+
+# 安装媒体依赖
+RUN yum -y install ffmpeg mediainfo zbar-devel tesseract librtmp-devel \
+    && yum clean all
+
+# 安装cpp编译依赖
+RUN yum update -y && yum install -y \
+    git-lfs \
+    cmake \
+    make \
+    libtool \
+    autoconf \
+    automake \
+    nasm \
+    opus-devel \
+    gcc-c++ \
+    # 其他依赖项
+    && yum clean all
+
+RUN git lfs install
+
+# 解决 bash: warning: setlocale: LC_CTYPE: cannot change locale (en_US.UTF-8): No such file or directory
+RUN yum -y update && \
+    yum -y install glibc-common && \
+    yum clean all
+RUN localedef -c -i en_US -f UTF-8 en_US.UTF-8
+# Set environment variables for locale
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
+CMD ["tail", "-f", "/dev/null"]
