@@ -23,3 +23,11 @@ docker system prune
 -v /path/on/host:/path/in/container
 
 ```
+
+开源存放位置
+```shell
+docker login ccr.ccs.tencentyun.com --username=xxxx
+
+docker tag [imageId] ccr.ccs.tencentyun.com/mail_base/ubuntu_py37_media_base:[tag]
+docker push ccr.ccs.tencentyun.com/mail_base/ubuntu_py37_media_base:v1
+```

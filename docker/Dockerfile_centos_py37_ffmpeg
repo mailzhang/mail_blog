@@ -1,6 +1,6 @@
 FROM centos:7
 # centos7 python37 ffmpeg等
-# docker build -f Dockerfile_centos_py37_ffmpeg -t media_centos_base:v1 .
+# docker build -f Dockerfile_centos_py37_ffmpeg -t centos_py37_media_base:v1 .
 RUN yum install epel-release -y && yum update -y
 
 # 安装python37
